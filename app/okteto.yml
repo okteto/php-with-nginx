@@ -1,8 +1,8 @@
 name: php
-command: bash
-volumes:
-- /root/.composer/cache
+command: php-fpm
 sync:
 - .:/app
+volumes:
+- /root/.composer/cache
 reverse:
 - 9003:9003
