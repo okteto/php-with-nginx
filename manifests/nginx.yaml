@@ -1,0 +1,75 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-config
+  labels:
+    app.kubernetes.io/instance: php
+data:
+  nginx.conf: |
+    server {
+      listen       80;
+      index        index.php index.html;
+      server_name  localhost;
+      root         /usr/share/nginx/html;
+
+      location ~ \.php$ {
+        include       fastcgi_params;
+        fastcgi_param REQUEST_METHOD $request_method;
+        fastcgi_param SCRIPT_FILENAME /app/$fastcgi_script_name;
+        fastcgi_pass  php:9000;
+      }
+    }
+  
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    app.kubernetes.io/instance: php
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+      - image: nginx:alpine 
+        imagePullPolicy: Always
+        name: web
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"     
+      # Load the configuration files for nginx
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: nginx-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  type: LoadBalancer  
+  ports:
+  - name: web
+    port: 80
+  selector:
+    app: web

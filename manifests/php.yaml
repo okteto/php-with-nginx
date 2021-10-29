@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php
+  labels:
+    app.kubernetes.io/instance: php
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php
+  template:
+    metadata:
+      labels:
+        app: php
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+      - image: ramiro/php-nginx
+        imagePullPolicy: Always
+        name: php
+        workingDir: /app
+        ports:
+        - containerPort: 9000
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"     
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: php
+spec:
+  type: ClusterIP  
+  ports:
+  - name: php
+    port: 9000
+  selector:
+    app: php

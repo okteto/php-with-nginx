@@ -1,0 +1,6 @@
+name: php
+command: bash
+volumes:
+- /root/.composer/cache
+sync:
+- .:/app
