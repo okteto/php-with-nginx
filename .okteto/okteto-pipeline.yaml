@@ -1,6 +1,6 @@
 # This pipeline will be executed when deploying via Okteto Cloud or Okteto Enterprise. 
 # Use this to build the image on the fly, using Okteto's build service.
 deploy:
-- okteto build -t okteto.dev/php-with-nginx:${OKTETO_GIT_COMMIT}
-- kustomize edit set image ramiro/php-nginx=okteto.dev/php-with-nginx:${OKTETO_GIT_COMMIT}
+- okteto build -t okteto.dev/php-with-nginx:${OKTETO_GIT_COMMIT} app
+- cd manifests && kustomize edit set image ramiro/php-nginx=okteto.dev/php-with-nginx:${OKTETO_GIT_COMMIT}
 - kubectl apply -k manifests 
