@@ -12,6 +12,10 @@ data:
       server_name  localhost;
       root         /usr/share/nginx/html;
 
+      location / {
+          try_files $uri $uri/ /index.php?q=$uri&$args;
+      }
+
       location ~ \.php$ {
         include       fastcgi_params;
         fastcgi_param REQUEST_METHOD $request_method;
