@@ -4,3 +4,5 @@ volumes:
 - /root/.composer/cache
 sync:
 - .:/app
+reverse:
+- 9000:9000
