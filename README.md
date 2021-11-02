@@ -1,6 +1,6 @@
 # Develop with Okteto, NGINX, and PHP-FPM
 
-[![Develop on Okteto](https://okteto.com/develop-okteto.svg)](https://github.com/okteto/php-with-nginx)
+[![Develop on Okteto](https://okteto.com/develop-okteto.svg)](https://cloud.okteto.com/deploy?repository=https://github.com/okteto/php-with-nginx)
 
 This sample will show you how to develop an NGINX + PHP-FPM application directly in Kubernetes with Okteto.
 
